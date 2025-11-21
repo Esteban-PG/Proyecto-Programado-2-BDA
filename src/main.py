@@ -1,12 +1,11 @@
 from etl.etl_cleaning import run_etl
+from analysis.analysis_kpis import run_analysis
 
 def main():
-    import os
-    print("Python está ejecutando desde:", os.getcwd())
 
-    print("========== INICIANDO ETL ==========\n")
     df_clean = run_etl()
-    print("\n========== ETL COMPLETADO ==========\n")
+
+    resultados = run_analysis()
 
 if __name__ == "__main__":
     main()
