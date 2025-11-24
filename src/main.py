@@ -12,7 +12,8 @@ def main():
         run_etl()
     else:
         print("Dataset limpio ya existe. Saltando ETL.")
-
+        
+    run_etl()
     resultados = run_analysis()
 
 if __name__ == "__main__":

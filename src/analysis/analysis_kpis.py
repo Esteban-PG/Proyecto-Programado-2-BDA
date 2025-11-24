@@ -1,15 +1,28 @@
 import pandas as pd
 import numpy as np
+from sqlalchemy import create_engine
+from config import DB_CONFIG
+
 
 def run_analysis():
 
-    print("========== INICIANDO ANÁLISIS ==========\n")
-
    
-    # Cargar dataset limpio
-    df = pd.read_csv("Dataset/credit_risk_dataset_clean.csv")
-    print("Dataset limpio cargado correctamente.")
-    print("Shape:", df.shape)
+    # # Cargar dataset limpio
+    # df = pd.read_csv("Dataset/credit_risk_dataset_clean.csv")
+    # print("Dataset limpio cargado correctamente.")
+    # print("Shape:", df.shape)
+
+    user = DB_CONFIG["user"]
+    password = DB_CONFIG["password"]
+    host = DB_CONFIG["host"]
+    port = DB_CONFIG["port"]
+    db = DB_CONFIG["database"]
+
+    engine = create_engine(f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}")
+
+    df = pd.read_sql("SELECT * FROM credit_risk", engine)
+
+    print("Dataset limpio cargado desde PostgreSQL")
 
     
     # KPI: Tasa de morosidad

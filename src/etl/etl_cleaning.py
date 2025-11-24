@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from sqlalchemy import create_engine
+from config import DB_CONFIG
 
 def run_etl():
    
@@ -49,6 +51,23 @@ def run_etl():
 
     # Guardar dataset limpio
     df.to_csv("Dataset/credit_risk_dataset_clean.csv", index=False)
+
+    user = DB_CONFIG["user"]
+    password = DB_CONFIG["password"]
+    host = DB_CONFIG["host"]
+    port = DB_CONFIG["port"]
+    db = DB_CONFIG["database"]
+
+    engine = create_engine(f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}")
+
+    df.to_sql(
+        "credit_risk",
+        engine,
+        if_exists="replace",
+        index=False
+    )
+
+    print("Dataset limpio también fue cargado en PostgreSQL (tabla credit_risk).")
 
     # Vemos la forma final del dataset
     print("\nShape final:", df.shape)
