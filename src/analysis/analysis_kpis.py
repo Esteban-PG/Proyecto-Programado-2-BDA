@@ -6,11 +6,6 @@ from config import DB_CONFIG
 
 def run_analysis():
 
-   
-    # # Cargar dataset limpio
-    # df = pd.read_csv("Dataset/credit_risk_dataset_clean.csv")
-    # print("Dataset limpio cargado correctamente.")
-    # print("Shape:", df.shape)
 
     user = DB_CONFIG["user"]
     password = DB_CONFIG["password"]
