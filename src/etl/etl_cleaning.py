@@ -2,28 +2,15 @@ import pandas as pd
 import numpy as np
 
 def run_etl():
-    # =========================
-    # 1. Cargar dataset
-    # =========================
+   
+    # Se carga el dataset
     df = pd.read_csv("Dataset/credit_risk_dataset.csv")
 
-    # Se imprime información básica del dataset
+    # Vemos la forma original del dataset
     print("Shape original:", df.shape) 
-    print("Primeras filas:")
-    print(df.head())
 
-    # =========================
-    # 2. Normalizar nombres de columnas
-    # =========================
-
+    # Normalizar nombres de columnas
     df.columns = df.columns.str.lower()
-
-    # =========================
-    # 3. Revisar y manejar valores nulos
-    # =========================
-
-    print("\nValores nulos por columna:")
-    print(df.isnull().sum())
 
     # Rellenar valores nulos básicos según tipo
     df['person_emp_length'].fillna(df['person_emp_length'].median(), inplace=True)
@@ -32,23 +19,15 @@ def run_etl():
     # Si hay nulos en income, eliminarlos del dataset
     df = df[df['person_income'].notna()]
 
-    # =========================
-    # 4. Conversión de tipos
-    # =========================
-
+    # Conversión de tipos
     df['loan_status'] = df['loan_status'].astype(int)
 
-    # =========================
-    # 5. Detección de outliers
-    # =========================
-
+    
+    # Detección de outliers
     df = df[df['person_income'] < df['person_income'].quantile(0.99)]
     df = df[df['loan_amnt'] < df['loan_amnt'].quantile(0.99)]
 
-    # =========================
-    # 6. CREACIÓN DE NUEVAS VARIABLES
-    # =========================
-
+    # CREACIÓN DE NUEVAS VARIABLES
     df["gasto_mensual"] = df["person_income"] * np.random.uniform(0.55, 0.75, len(df))
     df["ahorro_mensual"] = df["person_income"] - df["gasto_mensual"]
     df["indice_endeudamiento"] = df["loan_amnt"] / df["person_income"]
@@ -68,14 +47,10 @@ def run_etl():
         (df["score_crediticio"].max() - df["score_crediticio"].min())
     )
 
-    # =========================
-    # 7. Guardar dataset limpio
-    # =========================
-
+    # Guardar dataset limpio
     df.to_csv("Dataset/credit_risk_dataset_clean.csv", index=False)
 
-    print("\nArchivo limpio guardado como:")
-
+    # Vemos la forma final del dataset
     print("\nShape final:", df.shape)
 
     return df
